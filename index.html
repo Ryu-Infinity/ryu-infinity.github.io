@@ -3,28 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ryu-Infinity Apps</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 48px 24px;
-      color: #222;
-      line-height: 1.8;
-    }
-    h1 { font-size: 1.6em; }
-    a { color: #0066cc; }
-    .app { margin: 24px 0; padding: 16px; border: 1px solid #ddd; border-radius: 12px; }
-  </style>
+  <title>Ryu-Infinity Apps — 音楽・ライブ好きのための個人開発アプリ</title>
+  <meta name="description" content="ライブ参戦記録アプリ「High Light!」、音楽人格診断アプリ「EPIPHANY」などを開発する個人開発者Ryu-Infinityの公式サイト。ライブ・音楽コラムも掲載しています。">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Ryu-Infinity Apps</h1>
-  <p>個人開発アプリの公式サイトです。</p>
-  <div class="app">
-    <h2>High Light!</h2>
-    <p><a href="https://apps.apple.com/jp/app/high-light/id6764745563">App Store で見る</a></p>
-    <p><a href="https://ryu-infinity.github.io/High-Light-Pages/privacy.html">プライバシーポリシー</a></p>
+<header class="site">
+  <div class="wrap">
+    <a class="site-name" href="/">Ryu-Infinity Apps</a>
+    <nav class="global">
+      <a href="/#apps">アプリ</a>
+      <a href="/#blog">コラム</a>
+      <a href="/about.html">運営者情報</a>
+    </nav>
   </div>
+</header>
+
+<main class="wrap">
+  <h1>音楽とライブが、もっと好きになるアプリを。</h1>
+  <p class="lead">Ryu-Infinity Apps は、音楽・ライブ好きのためのiOSアプリを開発する個人開発プロジェクトです。自分自身が「現場」に通うファンとして、本当に欲しかったものだけを作っています。</p>
+
+  <h2 id="apps">アプリ</h2>
+
+  <div class="card">
+    <h2>High Light! <span class="badge hl">配信中</span></h2>
+    <p>ライブの感動を記録・共有するセトリ記録アプリ。セットリスト・会場・チケット代・写真をまとめて残し、参戦の歴史を「一生モノ」にします。</p>
+    <ul>
+      <li>セットリストの記録(OCR読み取り・コピペ・共有セトリのインポート対応)</li>
+      <li>世界に1枚のチケット風カード作成</li>
+      <li>参戦数・支出・会場マップなどの参戦統計</li>
+      <li>ライブ中のもしもに備えるSOS機能(同行者への位置情報つき通知)</li>
+    </ul>
+    <p>
+      <a class="btn primary" href="https://apps.apple.com/jp/app/high-light/id6764745563">App Store で見る</a>
+      <a class="btn outline" href="https://ryu-infinity.github.io/High-Light-Pages/privacy.html">プライバシーポリシー</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>EPIPHANY <span class="badge ep">音楽診断</span><span class="badge soon">近日リリース</span></h2>
+    <p>「あなたの音は、あなたを語る。」好きな曲・アーティストからあなたの音楽人格を診断し、毎日の1曲を記録できる音楽ライフログアプリです。</p>
+    <ul>
+      <li>シーン診断・アーティスト診断であなたの音楽人格タイプを分析</li>
+      <li>朝・昼・夜の「今日の1曲」を記録するデイリーソングログ</li>
+      <li>AIがあなたの選曲から気分やひとことの洞察を自動生成</li>
+      <li>診断結果や期間まとめをSNS共有カードに</li>
+    </ul>
+    <p>
+      <a class="btn primary" href="/epiphany/">くわしく見る</a>
+      <a class="btn outline" href="/epiphany/support.html">サポート</a>
+    </p>
+  </div>
+
+  <h2 id="blog">ライブ・音楽コラム</h2>
+  <p class="lead">アプリ開発のかたわら、ライブ・音楽ファンに役立つ情報をまとめています。</p>
+
+  <div class="card">
+    <h3><a href="/blog/ticket-guide.html">ライブチケットの取り方ガイド — ぴあ・ローチケ・イープラスの違いと使い分け</a></h3>
+    <p class="date">2026-07-16</p>
+    <p>先行抽選と一般発売の仕組み、主要プレイガイド3社の特徴、公式リセールの使い方まで。チケット確保の基本をまとめました。</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="/blog/fes-checklist.html">夏フェス持ち物チェックリスト — 初参戦でも失敗しない準備ガイド</a></h3>
+    <p class="date">2026-07-16</p>
+    <p>必需品から「あると差がつく」持ち物、暑さ対策・雨対策まで。毎年フェスに通う筆者の実体験ベースのチェックリストです。</p>
+  </div>
+
+  <div class="card">
+    <h3><a href="/blog/setlist-memory.html">ライブの思い出を残す方法 — セトリ記録のすすめ</a></h3>
+    <p class="date">2026-07-16</p>
+    <p>終演後の余韻は消えやすいもの。セットリストの調べ方から、記録を「資産」に変える習慣づくりまでを解説します。</p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <a href="/about.html">運営者情報・お問い合わせ</a>
+    <a href="/privacy.html">プライバシーポリシー</a>
+    <p class="disclosure">当サイトは、アフィリエイトプログラムへの参加を通じて、記事内のリンクから収益を得る場合があります。</p>
+    <p>© 2026 Ryu-Infinity</p>
+  </div>
+</footer>
 </body>
 </html>

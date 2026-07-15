@@ -1,0 +1,84 @@
+/* Ryu-Infinity Apps 共通スタイル */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --text: #1c1e26;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --bg: #ffffff;
+  --bg-soft: #f7f8fa;
+  --hl: #e91e8c;      /* High Light! */
+  --ep: #0891b2;      /* EPIPHANY(シアン系・白背景用に濃いめ) */
+  --ep2: #7c3aed;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.9;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+header.site {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+header.site .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.site-name { font-weight: 800; font-size: 1.05rem; color: var(--text); text-decoration: none; }
+nav.global a {
+  color: var(--muted); text-decoration: none; font-size: .88rem; margin-left: 18px;
+}
+nav.global a:hover { color: var(--text); }
+
+main { padding: 40px 0 64px; }
+h1 { font-size: 1.7rem; line-height: 1.4; margin-bottom: 12px; }
+h2 { font-size: 1.25rem; margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 1.05rem; margin: 24px 0 8px; }
+p { margin: 12px 0; }
+ul, ol { margin: 12px 0 12px 24px; }
+li { margin: 4px 0; }
+a { color: #0866c6; }
+.lead { color: var(--muted); font-size: .95rem; }
+.date { color: var(--muted); font-size: .8rem; }
+
+.card {
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px 22px; margin: 18px 0; background: var(--bg);
+}
+.card h2, .card h3 { margin-top: 0; }
+.badge {
+  display: inline-block; font-size: .72rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 999px; vertical-align: middle; margin-left: 8px;
+}
+.badge.hl { color: var(--hl); background: #fdeaf4; }
+.badge.ep { color: var(--ep); background: #e6f7fb; }
+.badge.soon { color: #92400e; background: #fef3c7; }
+.btn {
+  display: inline-block; padding: 10px 22px; border-radius: 999px;
+  font-size: .9rem; font-weight: 700; text-decoration: none; margin: 6px 8px 0 0;
+}
+.btn.primary { background: var(--text); color: #fff; }
+.btn.outline { border: 1.5px solid var(--line); color: var(--text); }
+
+table.cmp { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: .9rem; }
+table.cmp th, table.cmp td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+table.cmp th { background: var(--bg-soft); font-weight: 700; }
+
+.note {
+  background: var(--bg-soft); border-radius: 12px; padding: 14px 18px;
+  font-size: .85rem; color: var(--muted); margin: 20px 0;
+}
+
+footer.site {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 48px; font-size: .8rem; color: var(--muted);
+}
+footer.site a { color: var(--muted); margin-right: 16px; }
+footer.site .disclosure { margin-top: 10px; }
+
+@media (max-width: 520px) {
+  nav.global a { margin-left: 12px; font-size: .82rem; }
+  h1 { font-size: 1.45rem; }
+}
