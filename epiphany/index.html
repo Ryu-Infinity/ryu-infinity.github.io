@@ -3,66 +3,375 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EPIPHANY — あなたの音は、あなたを語る。| 音楽人格診断アプリ</title>
-  <meta name="description" content="好きな曲・アーティストからあなたの音楽人格を診断し、毎日の1曲を記録する音楽ライフログアプリ「EPIPHANY」の公式ページ。">
-  <link rel="stylesheet" href="/style.css">
+  <title>EPIPHANY - 音楽で自分を知る | 音楽人格診断&ソングログアプリ</title>
+  <meta name="description" content="選んだ曲から、AIがあなたの音楽人格を診断。毎日の1曲を記録するソングログ、SNS映えする共有カードも。音楽で自分を知るiOSアプリ「EPIPHANY」公式サイト。無料ダウンロード。">
+  <link rel="canonical" href="https://ryu-infinity.github.io/epiphany/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EPIPHANY - 音楽で自分を知る">
+  <meta property="og:description" content="あなたの音は、あなたを語る。選んだ曲からAIが音楽人格を診断する、音楽ライフログアプリ。">
+  <meta property="og:url" content="https://ryu-infinity.github.io/epiphany/">
+  <meta property="og:image" content="https://ryu-infinity.github.io/epiphany/img/ogp.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "EPIPHANY - 音楽で自分を知る",
+    "operatingSystem": "iOS",
+    "applicationCategory": "MusicApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "url": "https://apps.apple.com/jp/app/id6790271052"
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg2: #0b1120;
+      --panel: #111a2e;
+      --line: rgba(120, 160, 255, 0.14);
+      --text: #e8edf7;
+      --muted: #93a0b8;
+      --cyan: #4fc3f7;
+      --blue: #5b8cff;
+      --purple: #8b5cf6;
+      --grad: linear-gradient(92deg, #4fc3f7, #5b8cff 55%, #8b5cf6);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .en { font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif; letter-spacing: 0.08em; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+    /* nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(7, 11, 20, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 700; font-size: 18px; text-decoration: none; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .nav-links { display: flex; align-items: center; gap: 18px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--grad); color: #fff !important; font-weight: 700;
+      padding: 8px 16px; border-radius: 999px; font-size: 13px !important;
+    }
+    @media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+    /* hero */
+    .hero { position: relative; padding: 88px 0 40px; text-align: center; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: -40% -20% auto;
+      height: 130%;
+      background:
+        radial-gradient(600px 420px at 28% 20%, rgba(79, 195, 247, 0.16), transparent 65%),
+        radial-gradient(640px 460px at 74% 12%, rgba(139, 92, 246, 0.2), transparent 65%);
+      pointer-events: none;
+    }
+    .hero > .wrap { position: relative; }
+    .hero .logo { font-size: 15px; font-weight: 600; letter-spacing: 0.42em; color: var(--cyan); margin-bottom: 26px; text-indent: 0.42em; }
+    .hero h1 { font-size: clamp(32px, 6.4vw, 58px); font-weight: 800; line-height: 1.35; letter-spacing: 0.02em; }
+    .hero h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero .sub { margin: 22px auto 0; max-width: 560px; color: var(--muted); font-size: clamp(14px, 2.6vw, 17px); }
+    .cta-row { margin-top: 34px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .appstore-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; color: #000; text-decoration: none;
+      padding: 13px 26px; border-radius: 14px; font-weight: 700; font-size: 16px;
+      box-shadow: 0 8px 32px rgba(91, 140, 255, 0.35);
+      transition: transform 0.15s ease;
+    }
+    .appstore-btn:hover { transform: translateY(-2px); }
+    .appstore-btn svg { width: 20px; height: 24px; }
+    .cta-note { color: var(--muted); font-size: 12px; width: 100%; }
+    .hero-shot { margin: 52px auto 0; width: min(340px, 78vw); position: relative; }
+    .hero-shot::after {
+      content: ""; position: absolute; inset: auto -18% -34px;
+      height: 90px; background: radial-gradient(50% 100% at 50% 0%, rgba(91, 140, 255, 0.3), transparent 75%);
+      filter: blur(8px);
+    }
+    .phone { border-radius: 38px; border: 1px solid rgba(150, 180, 255, 0.22); overflow: hidden; background: #000; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6); }
+    .phone img { width: 100%; height: auto; display: block; }
+
+    /* section base */
+    section { padding: 84px 0; }
+    .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.32em; color: var(--cyan); text-transform: uppercase; margin-bottom: 14px; }
+    h2 { font-size: clamp(24px, 4.4vw, 36px); font-weight: 800; line-height: 1.45; letter-spacing: 0.02em; }
+    .feature { display: flex; align-items: center; gap: clamp(28px, 6vw, 80px); }
+    .feature.rev { flex-direction: row-reverse; }
+    .feature .txt { flex: 1.15; }
+    .feature .txt p { color: var(--muted); margin-top: 18px; font-size: 15px; }
+    .feature .shot { flex: 0.85; max-width: 300px; margin: 0 auto; }
+    @media (max-width: 760px) {
+      section { padding: 60px 0; }
+      .feature, .feature.rev { flex-direction: column; }
+      .feature .shot { max-width: min(280px, 74vw); }
+    }
+    .alt { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+    .checks { list-style: none; margin-top: 20px; display: grid; gap: 10px; }
+    .checks li { padding-left: 30px; position: relative; color: var(--text); font-size: 15px; }
+    .checks li::before {
+      content: ""; position: absolute; left: 0; top: 7px; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--grad); opacity: 0.9;
+      -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="black" d="M6.5 11.3 3.2 8l1.1-1.1 2.2 2.2 5.2-5.2 1.1 1.1z"/><circle cx="8" cy="8" r="7.3" fill="none" stroke="black" stroke-width="1.4"/></svg>') center / contain no-repeat;
+              mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="black" d="M6.5 11.3 3.2 8l1.1-1.1 2.2 2.2 5.2-5.2 1.1 1.1z"/><circle cx="8" cy="8" r="7.3" fill="none" stroke="black" stroke-width="1.4"/></svg>') center / contain no-repeat;
+    }
+
+    /* type chips */
+    .types { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .type-chip {
+      border: 1px solid var(--line); background: rgba(91, 140, 255, 0.08);
+      color: var(--text); border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 600;
+    }
+    .type-chip span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; margin-right: 2px; }
+
+    /* steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+    .step { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px 22px; }
+    .step .num { font-size: 13px; font-weight: 700; letter-spacing: 0.2em; color: var(--cyan); }
+    .step h3 { margin-top: 10px; font-size: 17px; }
+    .step p { margin-top: 8px; color: var(--muted); font-size: 14px; }
+
+    /* faq */
+    .faq-list { margin-top: 36px; display: grid; gap: 12px; }
+    details {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px;
+    }
+    summary { cursor: pointer; font-weight: 700; font-size: 15px; list-style: none; position: relative; padding-right: 28px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; position: absolute; right: 0; top: 0; color: var(--cyan); font-size: 20px; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    details p { margin-top: 12px; color: var(--muted); font-size: 14px; }
+
+    /* final cta */
+    .final { text-align: center; position: relative; overflow: hidden; padding: 100px 0; }
+    .final::before {
+      content: ""; position: absolute; inset: 30% -20% -40%;
+      background: radial-gradient(640px 400px at 50% 100%, rgba(139, 92, 246, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+    .final .wrap { position: relative; }
+    .final .note { margin-top: 40px; color: var(--muted); font-size: 12px; max-width: 620px; margin-left: auto; margin-right: auto; }
+
+    /* footer */
+    footer { border-top: 1px solid var(--line); padding: 44px 0 56px; background: var(--bg2); }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 18px; }
+    .foot-links a { color: var(--muted); font-size: 13px; text-decoration: none; }
+    .foot-links a:hover { color: var(--text); }
+    footer .disclosure, footer .copy { color: #6b7690; font-size: 12px; }
+    footer .copy { margin-top: 10px; }
+
+    /* reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.on { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  </style>
 </head>
 <body>
-<header class="site">
+
+<nav class="nav">
   <div class="wrap">
-    <a class="site-name" href="/">Ryu-Infinity Apps</a>
-    <nav class="global">
-      <a href="/#apps">アプリ</a>
-      <a href="/#blog">コラム</a>
-      <a href="/about.html">運営者情報</a>
-    </nav>
+    <a class="brand en" href="#top">EPIPHANY</a>
+    <div class="nav-links">
+      <a href="#diagnosis">診断</a>
+      <a href="#songlog">ソングログ</a>
+      <a href="#faq">FAQ</a>
+      <a href="/">開発者サイト</a>
+      <a class="nav-cta" href="https://apps.apple.com/jp/app/id6790271052">無料ダウンロード</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="logo en">EPIPHANY</p>
+    <h1>あなたの音は、<br><span class="grad">あなたを語る。</span></h1>
+    <p class="sub">「疲れた夜に聴く曲は?」——選んだ数曲から、AIがあなたの音楽人格を診断。毎日の1曲を残すほど、あなたの輪郭がくっきり浮かびあがる、音楽ライフログアプリ。</p>
+    <div class="cta-row">
+      <a class="appstore-btn" href="https://apps.apple.com/jp/app/id6790271052">
+        <svg viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        App Store でダウンロード
+      </a>
+      <p class="cta-note">無料でダウンロード / iOS 対応</p>
+    </div>
+    <div class="hero-shot">
+      <div class="phone"><img src="img/01_home.jpg" alt="EPIPHANYのホーム画面" width="800" height="1732"></div>
+    </div>
   </div>
 </header>
 
-<main class="wrap">
-  <h1>EPIPHANY <span class="badge ep">音楽診断</span><span class="badge soon">近日リリース</span></h1>
-  <p class="lead">あなたの音は、あなたを語る。— 好きな曲からあなた自身を分析する、音楽ライフログアプリです。</p>
-
-  <h2>EPIPHANYでできること</h2>
-
-  <div class="card">
-    <h3>音楽人格の診断</h3>
-    <p>「落ち込んだ夜に聴く曲は?」といったシーン別の質問、または好きなアーティスト5組から、あなたの音楽人格タイプを分析します。共鳴者・挑戦者・救済者・探究者・革命家・守護者の6タイプをベースに、AIがあなただけの診断文を生成。人生テーマや感情処理のクセまで、選曲から見えてくるものがあります。</p>
-  </div>
-
-  <div class="card">
-    <h3>デイリーソングログ</h3>
-    <p>朝・昼・夜の3スロットに「今日の1曲」を記録。AIが選曲からその日の気分を推論し、ひとことの洞察を添えてくれます。写真を添えれば、その日の情景ごと残せます。Apple Musicの再生履歴からワンタップで登録することもできます。</p>
-  </div>
-
-  <div class="card">
-    <h3>共有カード</h3>
-    <p>診断結果・今日の1曲・期間まとめ(今日/週/月/年)・お気に入り9枚グリッドを、SNS向けのカード画像として書き出せます。フィード用・ストーリーズ用の2フォーマット対応。</p>
-  </div>
-
-  <div class="card">
-    <h3>DEEP REPORT</h3>
-    <p>音楽性チャート(レーダー)・KEY SONGSの分析・相性の良いタイプなど、一歩踏み込んだ分析レポート。広告視聴または買い切りで解放できます。</p>
-  </div>
-
-  <h2>リリース情報</h2>
-  <p>iOS版を近日リリース予定です。最新情報は当サイトでお知らせします。</p>
-
-  <div class="note">本アプリの診断はエンターテインメントを目的としたものであり、医学的・心理学的な診断行為ではありません。</div>
-
-  <p>
-    <a class="btn outline" href="/epiphany/support.html">サポート・お問い合わせ</a>
-    <a class="btn outline" href="/epiphany/privacy.html">プライバシーポリシー</a>
-  </p>
-</main>
-
-<footer class="site">
+<section id="diagnosis">
   <div class="wrap">
-    <a href="/about.html">運営者情報・お問い合わせ</a>
-    <a href="/privacy.html">プライバシーポリシー</a>
+    <div class="feature reveal">
+      <div class="txt">
+        <p class="kicker en">Music Personality</p>
+        <h2>選んだ曲から、<br>AIが音楽人格を診断。</h2>
+        <p>感情や人生の場面をめぐる問いに、曲で答えていくだけ。「シーン診断」は6問から、「アーティスト診断」は好きな5組を選ぶだけ。Apple Musicの再生履歴からワンタップで診断する「リスニング診断」も。あなたが&quot;何に惹かれる人&quot;なのかをAIが読み解きます。</p>
+        <ul class="checks">
+          <li>音楽人格タイプとタイプ純度</li>
+          <li>人生テーマ / 感情の処理タイプ</li>
+          <li>あなたを表す3つのキーワード</li>
+          <li>核心を突くひとこと「EPIPHANY」</li>
+        </ul>
+        <div class="types">
+          <div class="type-chip"><span>#</span>共鳴者</div>
+          <div class="type-chip"><span>#</span>挑戦者</div>
+          <div class="type-chip"><span>#</span>救済者</div>
+          <div class="type-chip"><span>#</span>探究者</div>
+          <div class="type-chip"><span>#</span>革命家</div>
+          <div class="type-chip"><span>#</span>守護者</div>
+        </div>
+      </div>
+      <div class="shot"><div class="phone"><img src="img/03_result.jpg" alt="診断結果画面" loading="lazy" width="800" height="1732"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="feature rev reveal">
+      <div class="txt">
+        <p class="kicker en">Type Chemistry</p>
+        <h2>相性表で、<br>&quot;わかり合える相手&quot;が見える。</h2>
+        <p>6つの音楽人格には、それぞれ波長の合うタイプ・刺激をくれるタイプがあります。あなたのタイプを起点にした相性表を結果画面でチェック。友達と診断して答え合わせをするのも楽しい。</p>
+      </div>
+      <div class="shot"><div class="phone"><img src="img/04_chemistry.jpg" alt="タイプ相性表の画面" loading="lazy" width="800" height="1732"></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="feature reveal">
+      <div class="txt">
+        <p class="kicker en">Deep Report</p>
+        <h2>もっと深く知る、<br>DEEP REPORT。</h2>
+        <p>10項目の音楽性チャート、あなたを物語る3曲への深掘り、相性の良い音楽人格。一歩踏み込んだ分析レポートを、広告視聴または買い切りで解放できます。</p>
+      </div>
+      <div class="shot"><div class="phone"><img src="img/05_deep.jpg" alt="DEEP REPORTの画面" loading="lazy" width="800" height="1732"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="songlog">
+  <div class="wrap">
+    <div class="feature rev reveal">
+      <div class="txt">
+        <p class="kicker en">Daily Song Log</p>
+        <h2>今日の1曲を、<br>毎日残そう。</h2>
+        <p>朝・昼・夜の3枠に「今日の1曲」を記録(選ぶだけ・約30秒)。曲の雰囲気から、その日の気分をAIが自動で読み取ります。写真を添えれば、その日の情景ごと残せる。ログがたまるほど、あなたの音楽人格は育っていきます。</p>
+      </div>
+      <div class="shot"><div class="phone"><img src="img/07_songlog.jpg" alt="ソングログの画面" loading="lazy" width="800" height="1732"></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="feature reveal">
+      <div class="txt">
+        <p class="kicker en">Share Cards</p>
+        <h2>「この9枚が、私を語る。」<br>診断結果も、映える。</h2>
+        <p>よく聴いた曲のジャケットを3×3に並べた&quot;私を語る9枚&quot;カード、診断結果、期間のまとめ——ぜんぶ美しいカード画像に。フィード用・ストーリーズ用の2フォーマットで、そのままシェアできます。</p>
+      </div>
+      <div class="shot"><div class="phone"><img src="img/06_share.jpg" alt="共有カードの画面" loading="lazy" width="800" height="1732"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap reveal">
+    <p class="kicker en" style="text-align:center">How It Works</p>
+    <h2 style="text-align:center">はじめかたは、かんたん。</h2>
+    <div class="steps">
+      <div class="step">
+        <p class="num en">STEP 1</p>
+        <h3>診断をえらぶ</h3>
+        <p>シーン診断(6問〜)・アーティスト診断(好きな5組)・リスニング診断(再生履歴からワンタップ)。答えづらい設問はスキップOK。</p>
+      </div>
+      <div class="step">
+        <p class="num en">STEP 2</p>
+        <h3>曲で答える</h3>
+        <p>曲名は実在の楽曲からサジェスト。曲を選べばアーティスト名は自動で入るから、入力がとにかくラク。</p>
+      </div>
+      <div class="step">
+        <p class="num en">STEP 3</p>
+        <h3>結果をシェア</h3>
+        <p>診断結果はそのままSNS向けカードに。友達と見せ合って、相性の答え合わせも。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap reveal">
+    <p class="kicker en" style="text-align:center">FAQ</p>
+    <h2 style="text-align:center">よくある質問</h2>
+    <div class="faq-list">
+      <details>
+        <summary>無料で使えますか?</summary>
+        <p>ダウンロードは無料で、診断もソングログも無料でお使いいただけます。より深い分析「DEEP REPORT」は、広告視聴(その診断のみ)または買い切り(¥500)で解放できます。</p>
+      </details>
+      <details>
+        <summary>曲の再生や歌詞の表示はできますか?</summary>
+        <p>本アプリ内での楽曲そのものの再生や歌詞の表示は行いません。記録した曲はワンタップで普段お使いの再生アプリへ移動できます。</p>
+      </details>
+      <details>
+        <summary>診断はどのような仕組みですか?</summary>
+        <p>あなたが選んだ楽曲・アーティストをもとに、AIが音楽人格タイプ・人生テーマ・感情の処理タイプなどを分析します。本アプリの診断はエンターテインメントを目的としたものであり、医学的・心理学的な診断行為ではありません。</p>
+      </details>
+      <details>
+        <summary>機種変更時にデータは引き継げますか?</summary>
+        <p>設定画面からAppleでサインインしていただくと、診断結果やソングログを新しい端末に引き継げます。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap reveal">
+    <p class="kicker en">Download</p>
+    <h2>音楽で、自分を知ろう。</h2>
+    <p class="sub" style="color:var(--muted); margin-top:16px">選んだ曲が、あなたを語りだす。</p>
+    <div class="cta-row">
+      <a class="appstore-btn" href="https://apps.apple.com/jp/app/id6790271052">
+        <svg viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        App Store でダウンロード
+      </a>
+    </div>
+    <p class="note">本アプリの診断はエンターテインメントを目的としたものであり、医学的・心理学的な診断行為ではありません。<br>Apple および Apple ロゴは、米国およびその他の国で登録された Apple Inc. の商標です。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="/epiphany/support.html">サポート・お問い合わせ</a>
+      <a href="/epiphany/privacy.html">プライバシーポリシー</a>
+      <a href="/about.html">運営者情報</a>
+      <a href="/">Ryu-Infinity Apps</a>
+    </div>
     <p class="disclosure">当サイトは、アフィリエイトプログラムへの参加を通じて、記事内のリンクから収益を得る場合があります。</p>
-    <p>© 2026 Ryu-Infinity</p>
+    <p class="copy">© 2026 Ryu-Infinity</p>
   </div>
 </footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
 </body>
 </html>
