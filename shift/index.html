@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="description" content="対象期間を選んで各日を×・○・未定・ライブで入力し、提出用のシフト希望テキストを作るツール">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+<title>シフト希望メーカー</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #FAF6F3;
+  --card: #FFFFFF;
+  --ink: #241D1B;
+  --sub: #8C807B;
+  --line: #E9DFDA;
+  --seg-bg: #F1EAE6;
+  --accent: #E0384B;
+  --accent-soft: #FDEEEF;
+  --ok: #23935A;
+  --ok-soft: #E7F5EC;
+  --tbd: #C77F06;
+  --tbd-soft: #FBF1DC;
+  --off: #968C88;
+  --off-soft: #F0EBE8;
+  --out-bg: #26201E;
+  --out-ink: #F5EFEA;
+  --focus: #E0384B;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171213;
+    --card: #211B1C;
+    --ink: #F3EDEA;
+    --sub: #A2968F;
+    --line: #382F2F;
+    --seg-bg: #2C2526;
+    --accent: #F05560;
+    --accent-soft: #43242A;
+    --ok: #57C486;
+    --ok-soft: #1F3A2B;
+    --tbd: #E8A83E;
+    --tbd-soft: #40331A;
+    --off: #8A807C;
+    --off-soft: #322B29;
+    --out-bg: #0F0B0C;
+    --out-ink: #F1EAE4;
+    --focus: #F05560;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171213;
+  --card: #211B1C;
+  --ink: #F3EDEA;
+  --sub: #A2968F;
+  --line: #382F2F;
+  --seg-bg: #2C2526;
+  --accent: #F05560;
+  --accent-soft: #43242A;
+  --ok: #57C486;
+  --ok-soft: #1F3A2B;
+  --tbd: #E8A83E;
+  --tbd-soft: #40331A;
+  --off: #8A807C;
+  --off-soft: #322B29;
+  --out-bg: #0F0B0C;
+  --out-ink: #F1EAE4;
+  --focus: #F05560;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 480px; margin: 0 auto; padding: 20px 14px 56px; }
+header { margin-bottom: 18px; }
+.eyebrow {
+  font-family: "DotGothic16", monospace;
+  font-size: 11px;
+  letter-spacing: .35em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+h1 {
+  font-family: "DotGothic16", "Zen Kaku Gothic New", monospace;
+  font-size: 26px;
+  margin: 2px 0 4px;
+  letter-spacing: .06em;
+  text-wrap: balance;
+}
+.lede { color: var(--sub); font-size: 13px; margin: 0; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.card h2 {
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: var(--sub);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+.period-row { display: flex; align-items: center; gap: 8px; }
+.period-row input[type="date"] {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--seg-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 10px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.period-row .tilde { color: var(--sub); flex: none; }
+.hint { font-size: 12px; color: var(--sub); margin: 10px 0 0; }
+
+/* day rows */
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.day:last-child { border-bottom: none; }
+.day-top { display: flex; align-items: center; gap: 10px; }
+.date {
+  min-width: 64px;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.date .d { font-weight: 700; font-size: 16px; }
+.date .wd { font-size: 12px; color: var(--sub); }
+.date .wd.sat { color: #3B78D8; }
+.date .wd.sun { color: var(--accent); }
+.seg {
+  display: flex;
+  flex: 1;
+  background: var(--seg-bg);
+  border-radius: 9px;
+  padding: 3px;
+  gap: 3px;
+}
+.seg button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--sub);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 0;
+  border-radius: 7px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.day[data-s="x"]   .seg button[data-s="x"]   { background: var(--off-soft); color: var(--ink); font-weight: 700; box-shadow: inset 0 0 0 1px var(--off); }
+.day[data-s="o"]   .seg button[data-s="o"]   { background: var(--ok-soft);  color: var(--ok);  font-weight: 700; box-shadow: inset 0 0 0 1px var(--ok); }
+.day[data-s="tbd"] .seg button[data-s="tbd"] { background: var(--tbd-soft); color: var(--tbd); font-weight: 700; box-shadow: inset 0 0 0 1px var(--tbd); }
+.day[data-s="live"] .seg button[data-s="live"]{ background: var(--accent-soft); color: var(--accent); font-weight: 700; box-shadow: inset 0 0 0 1px var(--accent); }
+.live-inputs { display: none; flex-direction: column; gap: 6px; }
+.day[data-s="live"] .live-inputs { display: flex; }
+.live-inputs input {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--seg-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 10px;
+}
+.live-inputs input:focus { outline: 2px solid var(--focus); outline-offset: -1px; }
+.chips { display: none; flex-wrap: wrap; gap: 6px; }
+.chips.show { display: flex; }
+.chips button {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chips button:active { background: var(--accent-soft); border-color: var(--accent); }
+
+/* output */
+.stats { font-size: 12px; color: var(--sub); margin: 0 0 8px; font-variant-numeric: tabular-nums; }
+pre#output {
+  background: var(--out-bg);
+  color: var(--out-ink);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 10px;
+  font-family: "DotGothic16", ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre;
+}
+.btn-row { display: flex; gap: 8px; }
+.btn {
+  flex: 1;
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 10px;
+  padding: 12px 0;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  min-height: 46px;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--out-bg);
+  color: var(--out-ink);
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 20;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#sync { font-size: 11px; color: var(--sub); text-align: center; margin-top: 14px; }
+@media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Shift Request</div>
+    <h1>シフト希望メーカー</h1>
+    <p class="lede">期間を選んで、各日をタップ。ライブの日はイベント名と会場を入れると、提出用のテキストができます。</p>
+  </header>
+
+  <section class="card">
+    <h2>対象期間</h2>
+    <div class="period-row">
+      <input type="date" id="from" aria-label="開始日">
+      <span class="tilde">〜</span>
+      <input type="date" id="to" aria-label="終了日">
+    </div>
+    <p class="hint">× = 出れない ／ ○ = 希望なし ／ 未定 ／ ライブ = 参戦日</p>
+  </section>
+
+  <section class="card" style="padding:0" aria-label="日ごとの予定">
+    <div id="days"></div>
+  </section>
+
+  <section class="card">
+    <h2>出力</h2>
+    <p class="stats" id="stats"></p>
+    <pre id="output"></pre>
+    <div class="btn-row">
+      <button class="btn primary" id="copy">コピー</button>
+      <button class="btn" id="share" hidden>共有</button>
+    </div>
+  </section>
+
+  <p id="sync">この端末に保存中…</p>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  "use strict";
+  var LS_STATE = "shiftmaker.state.v1";
+  var LS_HIST = "shiftmaker.history.v1";
+  var WDAYS = ["日", "月", "火", "水", "木", "金", "土"];
+  var MAX_DAYS = 92;
+  // 実在会場の内蔵候補（入力履歴とあわせてサジェストに出す）
+  var VENUES = [
+    "東京ドーム", "日本武道館", "東京体育館", "国立代々木競技場第一体育館",
+    "有明アリーナ", "東京ガーデンシアター", "さいたまスーパーアリーナ", "ベルーナドーム",
+    "横浜アリーナ", "Kアリーナ横浜", "ぴあアリーナMM", "横浜BUNTAI", "パシフィコ横浜",
+    "幕張メッセ", "ZOZOマリンスタジアム", "国立競技場",
+    "東京国際フォーラム ホールA", "LINE CUBE SHIBUYA", "NHKホール", "TOKYO DOME CITY HALL",
+    "立川ステージガーデン", "武蔵野の森総合スポーツプラザ", "EX THEATER ROPPONGI",
+    "Zepp Haneda(TOKYO)", "Zepp DiverCity(TOKYO)", "Zepp Shinjuku(TOKYO)", "KT Zepp Yokohama",
+    "Zepp Nagoya", "Zepp Osaka Bayside", "Zepp Fukuoka", "Zepp Sapporo",
+    "豊洲PIT", "恵比寿LIQUIDROOM", "恵比寿ザ・ガーデンホール",
+    "Spotify O-EAST", "Spotify O-WEST", "Spotify O-Crest", "Spotify O-nest",
+    "渋谷CLUB QUATTRO", "WWW", "WWW X", "Veats Shibuya", "SPACE ODD",
+    "duo MUSIC EXCHANGE", "新宿LOFT", "下北沢SHELTER", "CLUB CITTA'",
+    "大阪城ホール", "フェスティバルホール", "京セラドーム大阪",
+    "バンテリンドーム ナゴヤ", "日本ガイシホール",
+    "みずほPayPayドーム福岡", "マリンメッセ福岡A館", "広島グリーンアリーナ",
+    "セキスイハイムスーパーアリーナ", "真駒内セキスイハイムアイスアリーナ"
+  ];
+
+  var state = null;   // {from, to, days:{iso:{s,a,v}}, updatedAt}
+  var history = null; // {artists:[], venues:[], updatedAt}
+
+  function todayISO(offset) {
+    var d = new Date();
+    d.setDate(d.getDate() + (offset || 0));
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function defaultState() {
+    return { from: todayISO(0), to: todayISO(27), days: {}, updatedAt: 0 };
+  }
+  function loadLS(key) {
+    try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
+  }
+  function saveLS(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+  }
+
+  function listDates(from, to) {
+    var out = [];
+    var a = new Date(from + "T00:00:00");
+    var b = new Date(to + "T00:00:00");
+    if (isNaN(a) || isNaN(b) || a > b) return out;
+    var cur = a;
+    while (cur <= b && out.length < MAX_DAYS) {
+      out.push(cur.getFullYear() + "-" + String(cur.getMonth() + 1).padStart(2, "0") + "-" + String(cur.getDate()).padStart(2, "0"));
+      cur = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 1);
+    }
+    return out;
+  }
+  function md(iso) {
+    var p = iso.split("-");
+    return Number(p[1]) + "/" + Number(p[2]);
+  }
+  function wd(iso) {
+    return new Date(iso + "T00:00:00").getDay();
+  }
+  function dayEntry(iso) {
+    if (!state.days[iso]) state.days[iso] = { s: "x", a: "", v: "" };
+    return state.days[iso];
+  }
+
+  /* ---------- persistence ---------- */
+  function markSync(msg) {
+    document.getElementById("sync").textContent = msg;
+  }
+  function save() {
+    state.updatedAt = Date.now();
+    saveLS(LS_STATE, state);
+    markSync("この端末に保存済み");
+  }
+  function saveHistory() {
+    history.updatedAt = Date.now();
+    saveLS(LS_HIST, history);
+  }
+  function addHistory(kind, value) {
+    value = value.trim();
+    if (!value) return;
+    var list = kind === "a" ? history.artists : history.venues;
+    var i = list.indexOf(value);
+    if (i === 0) return;
+    if (i > 0) list.splice(i, 1);
+    list.unshift(value);
+    if (list.length > 40) list.length = 40;
+    saveHistory();
+  }
+
+  /* ---------- rendering ---------- */
+  var daysEl = document.getElementById("days");
+
+  function renderDays() {
+    var dates = listDates(state.from, state.to);
+    daysEl.textContent = "";
+    if (!dates.length) {
+      var p = document.createElement("p");
+      p.className = "hint";
+      p.style.padding = "12px";
+      p.textContent = "対象期間を選ぶと日付が並びます（開始日は終了日より前に）。";
+      daysEl.appendChild(p);
+      return;
+    }
+    dates.forEach(function (iso) {
+      var e = dayEntry(iso);
+      var row = document.createElement("div");
+      row.className = "day";
+      row.dataset.date = iso;
+      row.dataset.s = e.s;
+
+      var top = document.createElement("div");
+      top.className = "day-top";
+      var date = document.createElement("div");
+      date.className = "date";
+      var w = wd(iso);
+      date.innerHTML = '<span class="d"></span><span class="wd"></span>';
+      date.querySelector(".d").textContent = md(iso);
+      var wdEl = date.querySelector(".wd");
+      wdEl.textContent = WDAYS[w];
+      if (w === 6) wdEl.classList.add("sat");
+      if (w === 0) wdEl.classList.add("sun");
+      top.appendChild(date);
+
+      var seg = document.createElement("div");
+      seg.className = "seg";
+      [["x", "×"], ["o", "○"], ["tbd", "未定"], ["live", "ライブ"]].forEach(function (opt) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.dataset.s = opt[0];
+        b.textContent = opt[1];
+        b.setAttribute("aria-label", md(iso) + " " + opt[1]);
+        b.addEventListener("click", function () {
+          e.s = opt[0];
+          row.dataset.s = opt[0];
+          save();
+          renderOutput();
+        });
+        seg.appendChild(b);
+      });
+      top.appendChild(seg);
+      row.appendChild(top);
+
+      var live = document.createElement("div");
+      live.className = "live-inputs";
+      live.appendChild(makeSuggestInput(iso, e, "a", "イベント名"));
+      live.appendChild(makeSuggestInput(iso, e, "v", "会場"));
+      row.appendChild(live);
+
+      daysEl.appendChild(row);
+    });
+  }
+
+  function makeSuggestInput(iso, entry, kind, label) {
+    var wrap = document.createElement("div");
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = label;
+    input.autocomplete = "off";
+    input.setAttribute("aria-label", md(iso) + " " + label);
+    input.value = entry[kind] || "";
+    var chips = document.createElement("div");
+    chips.className = "chips";
+    chips.style.marginTop = "6px";
+
+    function renderChips() {
+      var q = input.value.trim().toLowerCase();
+      var pool = (kind === "a" ? history.artists : history.venues).slice();
+      if (kind === "v") {
+        VENUES.forEach(function (s) {
+          if (pool.indexOf(s) === -1) pool.push(s);
+        });
+      }
+      var hits = pool.filter(function (s) {
+        return s !== input.value && (!q || s.toLowerCase().indexOf(q) !== -1);
+      }).slice(0, kind === "v" ? 10 : 8);
+      chips.textContent = "";
+      hits.forEach(function (s) {
+        var c = document.createElement("button");
+        c.type = "button";
+        c.textContent = s;
+        c.addEventListener("pointerdown", function (ev) { ev.preventDefault(); });
+        c.addEventListener("click", function () {
+          input.value = s;
+          entry[kind] = s;
+          addHistory(kind, s);
+          chips.classList.remove("show");
+          save();
+          renderOutput();
+        });
+        chips.appendChild(c);
+      });
+      chips.classList.toggle("show", hits.length > 0 && document.activeElement === input);
+    }
+    input.addEventListener("focus", renderChips);
+    input.addEventListener("input", function () {
+      entry[kind] = input.value;
+      renderChips();
+      save();
+      renderOutput();
+    });
+    input.addEventListener("blur", function () {
+      setTimeout(function () { chips.classList.remove("show"); }, 150);
+      addHistory(kind, input.value);
+    });
+    wrap.appendChild(input);
+    wrap.appendChild(chips);
+    return wrap;
+  }
+
+  function lineFor(iso) {
+    var e = state.days[iso];
+    if (!e || e.s === "x") return "×";
+    if (e.s === "o") return "○";
+    if (e.s === "tbd") return "未定";
+    var a = (e.a || "").trim();
+    var v = (e.v || "").trim();
+    if (!a && !v) return "（ライブ・未入力）";
+    if (!v) return a;
+    return a + "@" + v;
+  }
+  function renderOutput() {
+    var dates = listDates(state.from, state.to);
+    var lines = dates.map(function (iso) { return md(iso) + " " + lineFor(iso); });
+    document.getElementById("output").textContent = lines.join("\n") || "（対象期間を選んでください）";
+    var n = { x: 0, o: 0, tbd: 0, live: 0 };
+    dates.forEach(function (iso) { n[(state.days[iso] || { s: "x" }).s]++; });
+    document.getElementById("stats").textContent =
+      dates.length + "日間 ／ ライブ " + n.live + "件 ・ ○ " + n.o + " ・ 未定 " + n.tbd + " ・ × " + n.x;
+  }
+
+  /* ---------- toast / copy / share ---------- */
+  var toastTimer = null;
+  function toast(msg) {
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 1800);
+  }
+  document.getElementById("copy").addEventListener("click", function () {
+    var text = document.getElementById("output").textContent;
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); toast("コピーしました"); }
+      catch (e) { toast("コピーできませんでした"); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast("コピーしました"); }, fallback);
+    } else fallback();
+  });
+  var shareBtn = document.getElementById("share");
+  if (navigator.share) {
+    shareBtn.hidden = false;
+    shareBtn.addEventListener("click", function () {
+      navigator.share({ text: document.getElementById("output").textContent }).catch(function () {});
+    });
+  }
+
+  /* ---------- period inputs ---------- */
+  var fromEl = document.getElementById("from");
+  var toEl = document.getElementById("to");
+  function onPeriodChange() {
+    if (fromEl.value) state.from = fromEl.value;
+    if (toEl.value) state.to = toEl.value;
+    save();
+    renderDays();
+    renderOutput();
+  }
+  fromEl.addEventListener("change", onPeriodChange);
+  toEl.addEventListener("change", onPeriodChange);
+
+  /* ---------- boot ---------- */
+  state = loadLS(LS_STATE) || defaultState();
+  history = loadLS(LS_HIST) || { artists: [], venues: [], updatedAt: 0 };
+  fromEl.value = state.from;
+  toEl.value = state.to;
+  renderDays();
+  renderOutput();
+  markSync("入力内容はこの端末（ブラウザ）ごとに自動保存されます。他の人からは見えません。");
+})();
+</script>
+</body>
+</html>
